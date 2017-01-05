@@ -9,8 +9,8 @@ apt-get update
 apt-get install -y --no-install-recommends \
   build-essential \
   ca-certificates \
-  curl \
   gettext \
+  git \
   libldap2-dev \
   libpq-dev \
   libsasl2-dev \
@@ -20,16 +20,11 @@ apt-get install -y --no-install-recommends \
   python2.7 \
   python2.7-dev
 
-curl -L 'https://github.com/tildaslash/RatticWeb/archive/v1.3.1.tar.gz' \
-  -o rattic.tar.gz
+mkdir -p /srv
 
-mkdir -p /srv/rattic
+git clone --depth 2 https://github.com/Hellyna/RatticWeb.git /srv/rattic
 
-tar -xvf "$HOME/rattic.tar.gz" \
-  -C /srv/rattic \
-  --strip-components 1
-
-rm -fv "$HOME/rattic.tar.gz"
+rm -rvf /srv/rattic/.git
 
 pip install -r /srv/rattic/requirements-pgsql.txt
 pip install jinja2 uwsgi
@@ -37,7 +32,7 @@ pip install jinja2 uwsgi
 apt-get purge -y \
   build-essential \
   ca-certificates \
-  curl \
+  git \
   libldap2-dev \
   libpq-dev \
   libsasl2-dev \
