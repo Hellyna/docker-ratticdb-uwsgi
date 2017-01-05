@@ -135,14 +135,11 @@ from_email = $EMAIL_FROM
 EOF
 fi
 
-if [[ "$1" == 'migrate' ]]; then
-  sleep 10
-  $python manage.py migrate --all
-fi
+$python manage.py syncdb --noinput
+$python manage.py migrate --all
 
 if [[ "$1" == 'init' ]]; then
   sleep 10
-  $python manage.py syncdb --noinput
   $python manage.py demosetup
 fi
 
