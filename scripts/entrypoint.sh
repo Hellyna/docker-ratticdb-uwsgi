@@ -2,6 +2,7 @@ set -e
 
 database_host=''
 database_port=''
+database_name=''
 database_user=''
 database_password=''
 
@@ -35,6 +36,16 @@ else
     exit 1
   fi
   database_password="$POSTGRES_PASSWORD"
+fi
+
+if [[ -n "$POSTGRES_ENV_POSTGRES_DB" ]]; then
+  database_name="$POSTGRES_ENV_POSTGRES_DB"
+else
+  if [[ -z "$POSTGRES_DB" ]]; then
+    database_name="$POSTGRES_USER"
+  else
+    database_name="$POSTGRES_DB"
+  fi
 fi
 
 if [[ -z "$VIRTUAL_HOST" ]]; then
@@ -84,6 +95,10 @@ sed -ir \
 
 sed -ir \
   's/{{\s*database_port\s*}}/'"$(escape_sed "$database_port")"'/g' \
+  "$localconf_path"
+
+sed -ir \
+  's/{{\s*database_name\s*}}/'"$(escape_sed "$database_name")"'/g' \
   "$localconf_path"
 
 sed -ir \
